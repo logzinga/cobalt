@@ -1,6 +1,6 @@
 {
-    "name": "cobalt",
-    "description": "save what you love",
+    "name": "cobalt*",
+    "description": "save what you love (logzinga fork)",
     "version": "6.2.4",
     "author": "wukko",
     "exports": "./src/cobalt.js",
@@ -16,13 +16,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/wukko/cobalt.git"
+        "url": "git+https://github.com/logzinga/cobalt.git"
     },
     "license": "AGPL-3.0",
     "bugs": {
         "url": "https://github.com/wukko/cobalt/issues"
     },
-    "homepage": "https://github.com/wukko/cobalt#readme",
+    "homepage": "https://github.com/logzinga/cobalt#readme",
     "dependencies": {
         "cors": "^2.8.5",
         "dotenv": "^16.0.1",
