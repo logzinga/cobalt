@@ -1,6 +1,6 @@
 {
     "name": "cobalt*",
-    "description": "save what you love (logzinga fork)",
+    "description": "save what you love (logzinga's fork)",
     "version": "6.2.4",
     "author": "wukko",
     "exports": "./src/cobalt.js",
