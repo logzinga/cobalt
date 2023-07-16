@@ -1,4 +1,6 @@
 # cobalt
+this fork is for my personal cobalt instance, for keeping configs and stuff (use the official repo, preferably)
+
 Best way to save what you love.  
 Live web app: [co.wukko.me](https://co.wukko.me/)  
 
