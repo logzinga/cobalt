@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
     "name": "cobalt*",
     "description": "save what you love (logzinga's fork)",
     "version": "6.3.1",
+=======
+    "name": "cobalt",
+    "description": "save what you love",
+    "version": "7.0",
+>>>>>>> 2302c1dbe40d018ce49c7a76997850d3c9826503
     "author": "wukko",
     "exports": "./src/cobalt.js",
     "type": "module",
