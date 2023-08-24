@@ -7,9 +7,7 @@ import changelogManager from "../changelog/changelogManager.js";
 
 let com = getCommitInfo();
 
-let enabledServices = Object.keys(s).filter((p) => {
-    if (s[p].enabled) return true;
-}).sort().map((p) => {
+let enabledServices = Object.keys(s).filter(p => s[p].enabled).sort().map((p) => {
     return `<br>&bull; ${s[p].alias ? s[p].alias : p}`
 }).join('').substring(4)
 
@@ -72,6 +70,8 @@ export default function(obj) {
         <link rel="manifest" href="manifest.webmanifest" />
         <link rel="stylesheet" href="fonts/notosansmono.css" rel="preload" />
         <link rel="stylesheet" href="cobalt.css" />
+
+        <link rel="me" href="${authorInfo.support.mastodon.url}">
 
         <noscript><div style="margin: 2rem;">${t('NoScriptMessage')}</div></noscript>
     </head>
@@ -500,9 +500,9 @@ export default function(obj) {
         <div id="popup-backdrop" onclick="hideAllPopups()"></div>
         <div id="home" style="visibility:hidden">
             ${urgentNotice({
-                emoji: "🐱",
-                text: "report any issues!",
-                visible: false,
+                emoji: "🔗",
+                text: t("UrgentFeatureUpdate71"),
+                visible: true,
                 action: "popup('about', 1, 'changelog')"
             })}
             <div id="cobalt-main-box" class="center">
