@@ -1,4 +1,4 @@
-import { checkbox, collapsibleList, explanation, footerButtons, multiPagePopup, popup, popupWithBottomButtons, sep, settingsCategory, switcher, socialLink, urgentNotice, keyboardShortcuts } from "./elements.js";
+import { checkbox, collapsibleList, explanation, footerButtons, multiPagePopup, popup, popupWithBottomButtons, sep, settingsCategory, switcher, socialLink, socialLinks, urgentNotice, keyboardShortcuts, webLoc, sponsoredList } from "./elements.js";
 import { services as s, authorInfo, version, repo, donations, supportedAudio } from "../config.js";
 import { getCommitInfo } from "../sub/currentCommit.js";
 import loc from "../../localization/manager.js";
@@ -33,7 +33,7 @@ export default function(obj) {
     let isIOS = ua.match("iphone os");
     let isMobile = ua.match("android") || ua.match("iphone os");
 
-    let platform = isMobile ? "m" : "p";
+    let platform = isMobile ? "m" : "d";
     if (isMobile && isIOS) platform = "i";
 
     audioFormats[0]["text"] = t('SettingsAudioFormatBest');
@@ -71,11 +71,11 @@ export default function(obj) {
         <link rel="stylesheet" href="fonts/notosansmono.css" rel="preload" />
         <link rel="stylesheet" href="cobalt.css" />
 
-        <link rel="me" href="${authorInfo.support.mastodon.url}">
+        <link rel="me" href="${authorInfo.support.default.mastodon.url}">
 
         <noscript><div style="margin: 2rem;">${t('NoScriptMessage')}</div></noscript>
     </head>
-    <body id="cobalt-body" ${platform === "p" ? 'class="desktop"' : ''} data-nosnippet ontouchstart>
+    <body id="cobalt-body" ${platform === "d" ? 'class="desktop"' : ''} data-nosnippet ontouchstart>
         <body id="notification-area"></div>
         ${multiPagePopup({
             name: "about",
@@ -99,7 +99,11 @@ export default function(obj) {
                         text: collapsibleList([{
                             name: "services",
                             title: `${emoji("🔗")} ${t("CollapseServices")}`,
-                            body: `${enabledServices}<br/><br/>${t("ServicesNote")}`
+                            body: `${enabledServices}`
+                            + `<div class="explanation embedded">${t("SupportNotAffiliated")}`
+                            + `${obj.lang === "ru" ? `<br>${t("SupportMetaNoticeRU")}` : ''}`
+                            + `</div>`
+                            + `${t("ServicesNote")}`
                         }, {
                             name: "keyboard",
                             title: `${emoji("⌨")} ${t("CollapseKeyboard")}`,
@@ -143,19 +147,11 @@ export default function(obj) {
                             name: "support",
                             title: `${emoji("❤️‍🩹")} ${t("CollapseSupport")}`,
                             body: 
-                            `${t("SupportSelfTroubleshooting")}<br/><br/>
-                            ${t("FollowSupport")}<br/>
-                            ${socialLink(
-                                emoji("🐦"), "twitter", authorInfo.support.twitter.handle, authorInfo.support.twitter.url
-                            )}
-                            ${socialLink(
-                                emoji("👾"), "discord", authorInfo.support.discord.handle, authorInfo.support.discord.url
-                            )}
-                            ${socialLink(
-                                emoji("🐘"), "mastodon", authorInfo.support.mastodon.handle, authorInfo.support.mastodon.url
-                            )}<br/>
-                            ${t("SourceCode")}<br/>
-                            ${socialLink(
+                            `${t("SupportSelfTroubleshooting")}<br/><br/>`
+                            + `${t("FollowSupport")}<br/>`
+                            + `${socialLinks(obj.lang)}<br/>`
+                            + `${t("SourceCode")}<br/>`
+                            + `${socialLink(
                                 emoji("🐙"), "github", repo.replace("https://github.com/", ''), repo
                             )}<br/>
                             ${t("SupportNote")}`
@@ -168,7 +164,17 @@ export default function(obj) {
                             title: `${emoji("📑")} ${t("CollapseLegal")}`,
                             body: t("FairUse")
                         }])
-                    }]
+                    },
+                    ...(process.env.showSponsors ?
+                    [{
+                        text: t("SponsoredBy"),
+                        classes: ["sponsored-by-text"],
+                        nopadding: true
+                    }, {
+                        text: sponsoredList(),
+                        raw: true
+                    }] : []
+                    )]
                 })
             }, {
                 name: "changelog",
@@ -326,7 +332,8 @@ export default function(obj) {
                     }])
                 })
                 + settingsCategory({
-                    name: t('SettingsCodecSubtitle'),
+                    name: "codec",
+                    title: t('SettingsCodecSubtitle'),
                     body: switcher({
                         name: "vCodec",
                         explanation: t('SettingsCodecDescription'),
@@ -343,7 +350,8 @@ export default function(obj) {
                     })
                 })
                 + settingsCategory({
-                    name: t('SettingsVimeoPrefer'),
+                    name: "vimeo",
+                    title: t('SettingsVimeoPrefer'),
                     body: switcher({
                         name: "vimeoDash",
                         explanation: t('SettingsVimeoPreferDescription'),
@@ -421,6 +429,43 @@ export default function(obj) {
                     })
                 })
                 + settingsCategory({
+                    name: "filename",
+                    title: t('FilenameTitle'),
+                    body: switcher({
+                        name: "filenamePattern",
+                        items: [{
+                            action: "classic",
+                            text: t('FilenamePatternClassic')
+                        }, {
+                            action: "basic",
+                            text: t('FilenamePatternBasic')
+                        }, {
+                            action: "pretty",
+                            text: t('FilenamePatternPretty')
+                        }, {
+                            action: "nerdy",
+                            text: t('FilenamePatternNerdy')
+                        }]
+                    })
+                    + `<div id="filename-preview">
+                        <div id="video-filename" class="filename-item line">
+                            ${emoji('🎞️', 32, 1, 1)}
+                            <div class="filename-container">
+                                <div class="filename-label">${t('Preview')}</div>
+                                <div id="video-filename-text"></div>
+                            </div>
+                        </div>
+                        <div id="audio-filename" class="filename-item">
+                            ${emoji('🎧', 32, 1, 1)}
+                            <div class="filename-container">
+                                <div class="filename-label">${t('Preview')}</div>
+                                <div id="audio-filename-text"></div>
+                            </div>
+                        </div>
+                    </div>`
+                    + explanation(t('FilenameDescription'))
+                })
+                + settingsCategory({
                     name: "accessibility",
                     title: t('Accessibility'),
                     body: checkbox([{
@@ -452,7 +497,7 @@ export default function(obj) {
                         padding: "no-margin"
                     }])
                 })
-            }],
+            }]
         })}
         ${popupWithBottomButtons({
             name: "picker",
@@ -492,21 +537,35 @@ export default function(obj) {
                 buttonOnly: true,
                 classes: ["small"],
                 header: {
-                    closeAria: t('AccessibilityGoBack'),
                     title: t('TitlePopupError'),
                     emoji: emoji("😿", 78, 1, 1),
                 },
-                body: `<div id="desc-error" class="desc-padding subtext"></div>`,
+                body: `<div id="desc-error" class="desc-padding subtext desc-error"></div>`,
                 buttonText: t('ErrorPopupCloseButton')
             })}
+        </div>
+        <div id="popup-migration-container" class="popup-from-bottom">
+            ${popup({
+                name: "migration",
+                standalone: true,
+                buttonOnly: true,
+                classes: ["small"],
+                header: {
+                    title: t('NewDomainWelcomeTitle'),
+                    emoji: emoji("😸", 78, 1, 1),
+                },
+                body: `<div id="desc-migration" class="desc-padding subtext desc-error">${t('NewDomainWelcome')}</div>`,
+                buttonText: t('ErrorPopupCloseButton')
+            })}
+            <div id="popup-backdrop-message" onclick="popup('message', 0)"></div>
         </div>
         <div id="popup-backdrop" onclick="hideAllPopups()"></div>
         <div id="home" style="visibility:hidden">
             ${urgentNotice({
-                emoji: "💖",
-                text: t("UrgentThanks"),
+                emoji: "😸",
+                text: t("UrgentFilenameUpdate"),
                 visible: true,
-                action: "popup('about', 1, 'donate')"
+                action: "popup('about', 1, 'changelog')"
             })}
             <div id="cobalt-main-box" class="center">
                 <div id="logo">${t("AppTitleCobalt")}</div>
@@ -554,20 +613,28 @@ export default function(obj) {
         </div>
     </body>
     <script type="text/javascript">
-        const loc = {
-            noInternet: ` + "`" + t('ErrorNoInternet') + "`" + `,
-            noURLReturned: ` + "`" + t('ErrorNoUrlReturned') + "`" + `,
-            unknownStatus: ` + "`" + t('ErrorUnknownStatus') + "`" + `,
-            collapseHistory: ` + "`" + t('ChangelogPressToHide') + "`" + `,
-            pickerDefault: ` + "`" + t('MediaPickerTitle') + "`" + `,
-            pickerImages: ` + "`" + t('ImagePickerTitle') + "`" + `,
-            pickerImagesExpl: ` + "`" + t(`ImagePickerExplanation${isMobile ? "Phone" : "PC"}`) + "`" + `,
-            pickerDefaultExpl: ` + "`" + t(`MediaPickerExplanation${isMobile ? "Phone" : "PC"}`) + "`" + `,
-            featureErrorGeneric: ` + "`" + t('FeatureErrorGeneric') + "`" + `,
-            clipboardErrorNoPermission: ` + "`" + t('ClipboardErrorNoPermission') + "`" + `,
-            clipboardErrorFirefox: ` + "`" + t('ClipboardErrorFirefox') + "`" + `,
-        };
-        let apiURL = '${process.env.apiURL ? process.env.apiURL.slice(0, -1) : ''}';
+        let defaultApiUrl = '${process.env.apiURL ? process.env.apiURL : ''}';
+        const loc = ${webLoc(t,
+        [
+            'ErrorNoInternet',
+            'ErrorNoUrlReturned',
+            'ErrorUnknownStatus',
+            'ChangelogPressToHide',
+            'MediaPickerTitle',
+            'MediaPickerExplanationPhone',
+            'MediaPickerExplanationPC',
+            'ImagePickerTitle',
+            'ImagePickerExplanationPhone',
+            'ImagePickerExplanationPC',
+            'FeatureErrorGeneric',
+            'ClipboardErrorNoPermission',
+            'ClipboardErrorFirefox',
+            'DataTransferSuccess',
+            'DataTransferError',
+            'FilenamePreviewVideoTitle',
+            'FilenamePreviewAudioTitle',
+            'FilenamePreviewAudioAuthor'
+        ])}
     </script>
     <script type="text/javascript" src="cobalt.js"></script>
 </html>

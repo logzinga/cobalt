@@ -315,10 +315,11 @@ button:active,
     color: var(--accent);
     background: none;
     border: none;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     cursor: pointer;
     padding: 0;
-    letter-spacing: -0.36rem;
+    letter-spacing: -0.35rem;
+    font-weight: normal!important;
 }
 #download-button:disabled {
     color: var(--accent-subtext);
@@ -496,14 +497,14 @@ button:active,
     padding-top: 0!important;
 }
 .desc-padding {
-    padding-bottom: 1.5rem;
+    padding-bottom: 0.7rem;
 }
 #popup-subtitle {
     font-size: 1.1rem;
     padding-bottom: var(--padding-1);
 }
 #popup-desc,
-#desc-error,
+.desc-error,
 #popup-info-desc {
     width: 100%;
     text-align: left;
@@ -511,6 +512,9 @@ button:active,
     line-height: var(--line-height);
     user-select: text;
     -webkit-user-select: text;
+}
+.desc-error {
+    padding-bottom: 1.5rem;
 }
 #popup-title {
     font-size: 1.5rem;
@@ -533,12 +537,12 @@ button:active,
 .popup-content-inner,
 .tab-content-settings,
 #picker-holder {
-    padding-top: calc(env(safe-area-inset-top)/2 + 4.9rem);
+    padding-top: calc(env(safe-area-inset-top)/2 + 4.7rem);
     padding-bottom: calc(env(safe-area-inset-bottom)/2 + 4.8rem);
 }
 .tab-content-settings,
 #tab-about-about .popup-content-inner {
-    padding-top: calc(env(safe-area-inset-top)/2 + 6.2rem);;
+    padding-top: calc(env(safe-area-inset-top)/2 + 6rem);;
 }
 .bullpadding {
     padding-left: 0.58rem;
@@ -550,7 +554,7 @@ button:active,
     width: 100%;
 }
 .settings-category {
-    padding-bottom: 1rem;
+    padding-bottom: 0.7rem;
 }
 .separator {
     float: left;
@@ -600,6 +604,10 @@ button:active,
     text-align: left;
     line-height: 1.3rem!important;
     color: var(--accent-subtext);
+}
+.explanation.embedded {
+    margin-top: 0.825rem;
+    margin-bottom: 0.825rem;
 }
 .subtext {
     color: var(--accent-subtext);
@@ -752,9 +760,6 @@ button:active,
     user-select: none;
     -webkit-user-select: none;
 }
-.collapse-list.last {
-    margin-bottom: 1rem;
-}
 .collapse-header {
     padding: 0.5rem var(--padding-1);
     font-size: 0.95rem;
@@ -834,23 +839,6 @@ button:active,
 .no-animation #popup-backdrop {
     transition: none;
 }
-#floating-notification-area {
-    visibility: visible;
-    z-index: 999999;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding-top: 2rem;
-}
-.floating-notification {
-    text-align: center;
-    padding: 0.6rem 1.2rem;
-    background: var(--accent-hover-elevated);
-    display: flex;
-    box-shadow: 0 0 20px 10px var(--accent-hover);
-    font-size: 0.85rem;
-}
 .popup-from-bottom {
     position: fixed;
     width: 100%;
@@ -898,6 +886,49 @@ button:active,
     opacity: 1;
     transition: opacity 0.2s ease-out;
 }
+.sponsored-by-text {
+    text-align: center!important;
+    font-size: .85rem;
+    color: var(--accent-subtext);
+    user-select: none;
+}
+#sponsored-logos {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.2rem 1rem;
+    margin-bottom: 1rem;
+}
+.sponsored-logo svg {
+    height: inherit;
+    width: inherit;
+}
+.sponsored-logo svg path {
+    fill: var(--accent-subtext);
+}
+#filename-preview {
+    background: var(--accent-button);
+    margin-top: 0.8rem;
+}
+.filename-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 0.7rem;
+}
+.filename-item.line {
+    border-bottom: 0.1rem solid var(--accent-button-elevated);
+}
+.filename-label {
+    color: var(--accent-subtext);
+    font-size: 0.8rem;
+}
+.filename-container {
+    overflow-wrap: anywhere;
+}
 /* rounded corners */
 #bottom #paste,
 #footer .switch,
@@ -912,7 +943,8 @@ button:active,
 #popup-about .switch,
 #popup-tabs .switch,
 .text-to-copy,
-.text-to-copy.text-backdrop {
+.text-to-copy.text-backdrop,
+#filename-preview {
     border-radius: 5px / 6px;
 }
 [type=checkbox] {
@@ -1102,7 +1134,7 @@ button:active,
     }
     .popup.small.visible {
         transform: none;
-        transition: transform 200ms cubic-bezier(0.075, 0.82, 0.165, 1), opacity 130ms ease-in-out;
+        transition: transform 210ms cubic-bezier(0.062, 0.82, 0.165, 1), opacity 130ms ease-in-out;
     }
     .popup.small #popup-header {
         background: none;
