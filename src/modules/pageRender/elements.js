@@ -1,5 +1,6 @@
-import { celebrations } from "../config.js";
+import { authorInfo, celebrations, sponsors } from "../config.js";
 import emoji from "../emoji.js";
+import { loadFile } from "../sub/loadFromFs.js";
 
 export const backButtonSVG = `<svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14.1905 28.5L2 16L14.1905 3.5L16.2857 5.62054L7.65986 14.4654H30V17.5346H7.65986L16.2857 26.3516L14.1905 28.5Z" fill="#E1E1E1"/>
@@ -160,6 +161,16 @@ export function popupWithBottomButtons(obj) {
 export function socialLink(emji, name, handle, url) {
     return `<div class="cobalt-support-link">${emji} ${name}: <a class="text-backdrop link" href="${url}" target="_blank">${handle}</a></div>`
 }
+export function socialLinks(lang) {
+    let links = authorInfo.support[lang] ? authorInfo.support[lang] : authorInfo.support.default;
+    let r = ``;
+    for (let i in links) {
+        r += socialLink(
+            emoji(links[i].emoji), i, links[i].handle, links[i].url
+        )
+    }
+    return r
+}
 export function settingsCategory(obj) {
     return `<div id="settings-${obj.name}" class="settings-category">
         <div class="category-title">${obj.title ? obj.title : obj.name}</div>
@@ -237,4 +248,33 @@ export function keyboardShortcuts(arr) {
     base += `</div>`;
 
     return base;
+}
+export function webLoc(t, arr) {
+    let base = ``;
+    for (let i = 0; i < arr.length; i++) {
+        base += `${arr[i]}:` + "`" + t(arr[i]) + "`" + `,`
+    }
+    return `{${base}};`
+}
+
+export function sponsoredList() {
+    let base = ``;
+    let altText = ``
+    for (let i = 0; i < sponsors.length; i++) {
+        let s = sponsors[i];
+        let loadedLogo = loadFile(`./src/front/sponsors/${s.name}.svg`);
+
+        altText += `${s.fullName ? s.fullName : s.name}, `;
+        base +=
+        `<a class="sponsored-logo ${s.name}" 
+            href="${s.url}" target="_blank" 
+            style="width: calc(${s.logo.width}px / ${s.logo.scale}); height: calc(${s.logo.height}px / ${s.logo.scale});">
+            ${loadedLogo}
+        </a>`
+    }
+    return `<div id="sponsored-logos" aria-label="${altText.slice(0, -2)}">${base}</div>`
+}
+
+export function betaTag() {
+    return process.env.isBeta ? '<span class="logo-sub">β</span>' : ''
 }

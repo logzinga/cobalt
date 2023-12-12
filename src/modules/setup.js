@@ -29,9 +29,6 @@ console.log(
     `${Cyan(`Hey, this is cobalt v.${version}!`)}\n${Bright("Let's start by creating a new ")}${Cyan(".env")}${Bright(" file. You can always change it later.")}`
 )
 
-console.log(
-    `\n${Bright("⚠️ Please notice that since v.6.0 cobalt is hosted in two parts. API and web app are now separate.\nMerged hosting is no longer available.")}`
-)
 function setup() {
     console.log(Bright("\nWhat kind of server will this instance be?\nOptions: api, web."));
 
@@ -70,7 +67,7 @@ function setup() {
                 })
                 break;
             case 'web':
-                console.log(Bright("\nAwesome! What's the domain this web app instance will be running on? (localhost)\nExample: co.wukko.me"));
+                console.log(Bright("\nAwesome! What's the domain this web app instance will be running on? (localhost)\nExample: cobalt.tools"));
     
                 rl.question(q, webURL => {
                     ob['webURL'] = `http://localhost:9001/`;

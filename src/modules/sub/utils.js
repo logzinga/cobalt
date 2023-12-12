@@ -4,11 +4,12 @@ const apiVar = {
     allowed: {
         vCodec: ["h264", "av1", "vp9"],
         vQuality: ["max", "4320", "2160", "1440", "1080", "720", "480", "360", "240", "144"],
-        aFormat: ["best", "mp3", "ogg", "wav", "opus"]
+        aFormat: ["best", "mp3", "ogg", "wav", "opus"],
+        filenamePattern: ["classic", "pretty", "basic", "nerdy"]
     },
     booleanOnly: ["isAudioOnly", "isNoTTWatermark", "isTTFullAudio", "isAudioMuted", "dubLang", "vimeoDash", "disableMetadata"]
 }
-const forbiddenChars = ['}', '{', '(', ')', '\\', '%', '>', '<', '^', '*', '!', '~', ';', ':', ',', '`', '[', ']', '#', '$', '"', "'", "@", '=='];
+const forbiddenChars = ['}', '{', '(', ')', '\\', '>', '<', '^', '*', '!', '~', ';', ':', ',', '`', '[', ']', '#', '$', '"', "'", "@", '=='];
 const forbiddenCharsString = ['}', '{', '%', '>', '<', '^', ';', '`', '$', '"', "@", '='];
 
 export function apiJSON(type, obj) {
@@ -50,7 +51,7 @@ export function metadataManager(obj) {
     return commands;
 }
 export function cleanURL(url, host) {
-    switch(host) {
+    switch (host) {
         case "vk":
             url = url.includes('clip') ? url.split('&')[0] : url.split('?')[0];
             break;
@@ -70,14 +71,11 @@ export function cleanURL(url, host) {
         url = url.replaceAll(forbiddenChars[i], '')
     }
     url = url.replace('https//', 'https://')
-    if (url.includes('youtube.com/shorts/')) {
-        url = url.split('?')[0].replace('shorts/', 'watch?v=');
-    }
     return url.slice(0, 128)
 }
 export function cleanString(string) {
     for (let i in forbiddenCharsString) {
-        string = string.replaceAll(forbiddenCharsString[i], '')
+        string = string.replaceAll("/", "_").replaceAll(forbiddenCharsString[i], '')
     }
     return string;
 }
@@ -97,6 +95,7 @@ export function checkJSONPost(obj) {
         vCodec: "h264",
         vQuality: "720",
         aFormat: "mp3",
+        filenamePattern: "classic",
         isAudioOnly: false,
         isNoTTWatermark: false,
         isTTFullAudio: false,
@@ -134,18 +133,6 @@ export function checkJSONPost(obj) {
 }
 export function getIP(req) {
     return req.header('cf-connecting-ip') ? req.header('cf-connecting-ip') : req.ip;
-}
-export function getThreads() {
-    try {
-        if (process.env.ffmpegThreads && process.env.ffmpegThreads.length <= 3
-            && (Number(process.env.ffmpegThreads) >= 0 && Number(process.env.ffmpegThreads) <= 256)) {
-            return process.env.ffmpegThreads
-        } else {
-            return '0'
-        }
-    } catch (e) {
-        return '0'
-    }
 }
 export function cleanHTML(html) {
     let clean = html.replace(/ {4}/g, '');

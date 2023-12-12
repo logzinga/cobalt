@@ -19,8 +19,10 @@ import instagram from "./services/instagram.js";
 import vine from "./services/vine.js";
 import pinterest from "./services/pinterest.js";
 import streamable from "./services/streamable.js";
+import twitch from "./services/twitch.js";
+import rutube from "./services/rutube.js";
 
-export default async function (host, patternMatch, url, lang, obj) {
+export default async function(host, patternMatch, url, lang, obj) {
     try {
         let r, isAudioOnly = !!obj.isAudioOnly, disableMetadata = !!obj.disableMetadata;
 
@@ -30,8 +32,7 @@ export default async function (host, patternMatch, url, lang, obj) {
         switch (host) {
             case "twitter":
                 r = await twitter({
-                    id: patternMatch["id"] ? patternMatch["id"] : false,
-                    spaceId: patternMatch["spaceId"] ? patternMatch["spaceId"] : false
+                    id: patternMatch["id"]
                 });
                 break;
             case "vk":
@@ -66,8 +67,7 @@ export default async function (host, patternMatch, url, lang, obj) {
             case "reddit":
                 r = await reddit({
                     sub: patternMatch["sub"],
-                    id: patternMatch["id"],
-                    title: patternMatch["title"]
+                    id: patternMatch["id"]
                 });
                 break;
             case "douyin":
@@ -85,7 +85,7 @@ export default async function (host, patternMatch, url, lang, obj) {
                 r = await tumblr({
                     id: patternMatch["id"],
                     url: url,
-                    user: patternMatch["user"] ? patternMatch["user"] : false
+                    user: patternMatch["user"] || false
                 });
                 break;
             case "vimeo":
@@ -99,27 +99,49 @@ export default async function (host, patternMatch, url, lang, obj) {
             case "soundcloud":
                 isAudioOnly = true;
                 r = await soundcloud({
+                    url: url,
                     author: patternMatch["author"],
-                    song: patternMatch["song"], url: url,
-                    shortLink: patternMatch["shortLink"] ? patternMatch["shortLink"] : false,
-                    accessKey: patternMatch["accessKey"] ? patternMatch["accessKey"] : false,
+                    song: patternMatch["song"],
+                    shortLink: patternMatch["shortLink"] || false,
+                    accessKey: patternMatch["accessKey"] || false,
                     format: obj.aFormat
                 });
                 break;
             case "instagram":
-                r = await instagram({ id: patternMatch["id"] });
+                r = await instagram({
+                    ...patternMatch,
+                    quality: obj.vQuality
+                })
                 break;
             case "vine":
-                r = await vine({ id: patternMatch["id"] });
+                r = await vine({
+                    id: patternMatch["id"]
+                });
                 break;
             case "pinterest":
-                r = await pinterest({ id: patternMatch["id"] });
+                r = await pinterest({
+                    id: patternMatch["id"]
+                });
                 break;
             case "streamable":
                 r = await streamable({
                     id: patternMatch["id"],
                     quality: obj.vQuality,
                     isAudioOnly: isAudioOnly,
+                });
+                break;
+            case "twitch":
+                r = await twitch({
+                    clipId: patternMatch["clip"] || false,
+                    quality: obj.vQuality,
+                    isAudioOnly: obj.isAudioOnly
+                });
+                break;
+            case "rutube":
+                r = await rutube({
+                    id: patternMatch["id"],
+                    quality: obj.vQuality,
+                    isAudioOnly: isAudioOnly
                 });
                 break;
             default:
@@ -129,9 +151,11 @@ export default async function (host, patternMatch, url, lang, obj) {
         if (r.isAudioOnly) isAudioOnly = true;
         let isAudioMuted = isAudioOnly ? false : obj.isAudioMuted;
 
-        if (r.error) return apiJSON(0, { t: Array.isArray(r.error) ? loc(lang, r.error[0], r.error[1]) : loc(lang, r.error) });
+        if (r.error) return apiJSON(0, {
+            t: Array.isArray(r.error) ? loc(lang, r.error[0], r.error[1]) : loc(lang, r.error)
+        })
 
-        return matchActionDecider(r, host, obj.aFormat, isAudioOnly, lang, isAudioMuted, disableMetadata);
+        return matchActionDecider(r, host, obj.aFormat, isAudioOnly, lang, isAudioMuted, disableMetadata, obj.filenamePattern)
     } catch (e) {
         return apiJSON(0, { t: genericError(lang, host) })
     }
