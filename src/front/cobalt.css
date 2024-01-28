@@ -35,13 +35,13 @@
         --accent: rgb(25, 25, 25);
         --accent-highlight: rgb(25, 25, 25, 4%);
         --accent-subtext: rgb(110, 110, 110);
-        --accent-hover: rgb(230, 230, 230);
-        --accent-hover-elevated: rgb(215, 215, 215);
+        --accent-hover: rgb(225, 225, 225);
+        --accent-hover-elevated: rgb(210, 210, 210);
         --accent-hover-transparent: rgba(215, 215, 215, 0.5);
-        --accent-button: rgb(225, 225, 225);
-        --accent-button-elevated: rgb(210, 210, 210);
-        --glass: rgba(230, 230, 230, 0.85);
-        --glass-lite: rgba(230, 230, 230, 0.98);
+        --accent-button: rgb(232, 232, 232);
+        --accent-button-elevated: rgb(215, 215, 215);
+        --glass: rgba(232, 232, 232, 0.85);
+        --glass-lite: rgba(232, 232, 232, 0.98);
         --subbackground: rgb(240, 240, 240);
         --background: rgb(255, 255, 255);
         --background-backdrop: rgba(255, 255, 255, 0.5);
@@ -66,13 +66,13 @@
     --accent: rgb(25, 25, 25);
     --accent-highlight: rgb(25, 25, 25, 4%);
     --accent-subtext: rgb(110, 110, 110);
-    --accent-hover: rgb(230, 230, 230);
-    --accent-hover-elevated: rgb(215, 215, 215);
-    --accent-hover-transparent: rgba(219, 219, 219, 0.5);
-    --accent-button: rgb(225, 225, 225);
-    --accent-button-elevated: rgb(210, 210, 210);
-    --glass: rgba(230, 230, 230, 0.85);
-    --glass-lite: rgba(230, 230, 230, 0.98);
+    --accent-hover: rgb(225, 225, 225);
+    --accent-hover-elevated: rgb(210, 210, 210);
+    --accent-hover-transparent: rgba(215, 215, 215, 0.5);
+    --accent-button: rgb(232, 232, 232);
+    --accent-button-elevated: rgb(215, 215, 215);
+    --glass: rgba(232, 232, 232, 0.85);
+    --glass-lite: rgba(232, 232, 232, 0.98);
     --subbackground: rgb(240, 240, 240);
     --background: rgb(255, 255, 255);
     --background-backdrop: rgba(255, 255, 255, 0.5);
@@ -743,11 +743,13 @@ button:active,
 }
 #picker-holder {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     flex-wrap: wrap;
     align-content: space-around;
     padding-top: calc(env(safe-area-inset-top)/2 + 7.6rem);
     padding-bottom: calc(env(safe-area-inset-bottom)/2 + 4.8rem);
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
 }
 .imageBlock {
     width: 100%;
@@ -1153,6 +1155,10 @@ button:active,
     .close-error {
         bottom: 3rem;
     }
+    #picker-holder {
+        padding-left: 0;
+        padding-right: 0;
+    }
     #picker-holder::-webkit-scrollbar {
         display: none;
     }
@@ -1178,10 +1184,5 @@ button:active,
     .popup-header-contents {
         padding-left: 0.7rem;
         padding-right: 0.7rem;
-    }
-}
-@media screen and (max-width: 400px) {
-    .popup-title {
-        line-height: inherit;
     }
 }
