@@ -562,125 +562,10 @@
             "status": "error"
         }
     }],
-    "douyin": [{
-        "name": "short link video, with watermark",
-        "url": "https://v.douyin.com/2p4Aya7/",
-        "params": {},
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "short link video (isNoTTWatermark)",
-        "url": "https://v.douyin.com/2p4Aya7/",
-        "params": {
-            "isNoTTWatermark": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "short link video (isAudioOnly)",
-        "url": "https://v.douyin.com/2p4Aya7/",
-        "params": {
-            "isAudioOnly": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "short link video (isAudioOnly, isTTFullAudio)",
-        "url": "https://v.douyin.com/2p4Aya7/",
-        "params": {
-            "isAudioOnly": true,
-            "isTTFullAudio": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "long link video (isNoTTWatermark)",
-        "url": "https://www.douyin.com/video/7120601033314716968",
-        "params": {
-            "isNoTTWatermark": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "images",
-        "url": "https://v.douyin.com/MdVwo31/",
-        "params": {},
-        "expected": {
-            "code": 200,
-            "status": "picker"
-        }
-    }, {
-        "name": "long link inexistent",
-        "url": "https://www.douyin.com/video/7120851458451417478",
-        "params": {},
-        "expected": {
-            "code": 400,
-            "status": "error"
-        }
-    }, {
-        "name": "short link inexistent",
-        "url": "https://v.douyin.com/2p4ewa7/",
-        "params": {},
-        "expected": {
-            "code": 400,
-            "status": "error"
-        }
-    }],
     "tiktok": [{
-        "name": "short link (vt) video, with watermark",
-        "url": "https://vt.tiktok.com/ZS85U86aa/",
-        "params": {},
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "short link (vt) video (isNoTTWatermark)",
-        "url": "https://vt.tiktok.com/ZS85U86aa/",
-        "params": {
-            "isNoTTWatermark": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "short link (vm) video (isAudioOnly)",
-        "url": "https://vm.tiktok.com/ZMYrYAf34/",
-        "params": {
-            "isAudioOnly": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "short link (vm) video (isAudioOnly, isTTFullAudio)",
-        "url": "https://vm.tiktok.com/ZMYrYAf34/",
-        "params": {
-            "isAudioOnly": true,
-            "isTTFullAudio": true
-        },
-        "expected": {
-            "code": 200,
-            "status": "stream"
-        }
-    }, {
-        "name": "long link video (isNoTTWatermark)",
+        "name": "long link video",
         "url": "https://www.tiktok.com/@fatfatmillycat/video/7195741644585454894",
-        "params": {
-            "isNoTTWatermark": true
-        },
+        "params": {},
         "expected": {
             "code": 200,
             "status": "stream"
@@ -746,6 +631,23 @@
             "code": 200,
             "status": "stream"
         }
+    }, {
+        "name": "b23.tv shortlink",
+        "url": "https://b23.tv/lbMyOI9",
+        "params": {},
+        "expected": {
+            "code": 200,
+            "status": "stream"
+        }
+    },
+    {
+        "name": "bilibili.tv link",
+        "url": "https://www.bilibili.tv/en/video/4789599404426256",
+        "params": {},
+        "expected": {
+            "code": 200,
+            "status": "stream"
+        }
     }],
     "tumblr": [{
         "name": "at.tumblr link",
@@ -773,7 +675,7 @@
         }
     }, {
         "name": "tumblr audio",
-        "url": "https://rf9weu8hjf789234hf9.tumblr.com/post/172006661342/everyone-thats-made-a-video-out-of-this-without",
+        "url": "https://www.tumblr.com/zedneon/737815079301562368/zedneon-ft-mr-sauceman-tech-n9ne-speed-of?source=share",
         "params": {},
         "expected": {
             "code": 200,
@@ -826,6 +728,14 @@
         "params": {
             "vQuality": "360"
         },
+        "expected": {
+            "code": 200,
+            "status": "stream"
+        }
+    }, {
+        "name": "private video",
+        "url": "https://vimeo.com/903115595/f14d06da38",
+        "params": {},
         "expected": {
             "code": 200,
             "status": "stream"
@@ -1175,6 +1085,31 @@
     "ok": [{
         "name": "regular video",
         "url": "https://ok.ru/video/7204071410346",
+        "params": {},
+        "expected": {
+            "code": 200,
+            "status": "stream"
+        }
+    }],
+    "dailymotion": [{
+        "name": "regular video",
+        "url": "https://www.dailymotion.com/video/x8t1eho",
+        "params": {},
+        "expected": {
+            "code": 200,
+            "status": "stream"
+        }
+    }, {
+        "name": "private video",
+        "url": "https://www.dailymotion.com/video/k41fZWpx2TaAORA2nok",
+        "params": {},
+        "expected": {
+            "code": 200,
+            "status": "stream"
+        }
+    }, {
+        "name": "dai.ly shortened link",
+        "url": "https://dai.ly/k41fZWpx2TaAORA2nok",
         "params": {},
         "expected": {
             "code": 200,

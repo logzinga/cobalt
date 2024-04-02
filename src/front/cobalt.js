@@ -1,4 +1,4 @@
-const version = 41;
+const version = 42;
 
 const ua = navigator.userAgent.toLowerCase();
 const isIOS = ua.match("iphone os");
@@ -8,7 +8,7 @@ const isFirefox = ua.match("firefox/");
 const isOldFirefox = ua.match("firefox/") && ua.split("firefox/")[1].split('.')[0] < 103;
 
 const regex = new RegExp(/https:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/);
-const notification = `<div class="notification-dot"></div>`;
+const notification = `<span class="notification-dot"></span>`;
 
 const switchers = {
     "theme": ["auto", "light", "dark"],
@@ -24,13 +24,13 @@ const checkboxes = [
     "alwaysVisibleButton",
     "disableChangelog",
     "downloadPopup",
-    "disableTikTokWatermark",
     "fullTikTokAudio",
     "muteAudio",
     "reduceTransparency",
     "disableAnimations",
     "disableMetadata",
     "twitterGif",
+    "plausible_ignore"
 ];
 const exceptions = { // used for mobile devices
     "vQuality": "720"
@@ -369,13 +369,11 @@ async function download(url) {
     if (sGet("vimeoDash") === "true") req.vimeoDash = true;
     if (sGet("audioMode") === "true") {
         req.isAudioOnly = true;
-        req.isNoTTWatermark = true; // video tiktok no watermark
         if (sGet("fullTikTokAudio") === "true") req.isTTFullAudio = true; // audio tiktok full
     } else {
         req.vQuality = sGet("vQuality").slice(0, 4);
         if (sGet("muteAudio") === "true") req.isAudioMuted = true;
         if (url.includes("youtube.com/") || url.includes("/youtu.be/")) req.vCodec = sGet("vCodec").slice(0, 4);
-        if ((url.includes("tiktok.com/") || url.includes("douyin.com/")) && sGet("disableTikTokWatermark") === "true") req.isNoTTWatermark = true;
     }
 
     if (sGet("disableMetadata") === "true") req.disableMetadata = true;
@@ -566,7 +564,12 @@ function loadSettings() {
         eid("cobalt-body").classList.add('no-animation');
     }
     for (let i = 0; i < checkboxes.length; i++) {
-        if (sGet(checkboxes[i]) === "true") eid(checkboxes[i]).checked = true;
+        try {
+            if (sGet(checkboxes[i]) === "true") eid(checkboxes[i]).checked = true;
+        }
+        catch {
+            console.error(`checkbox ${checkboxes[i]} failed to initialize`)
+        }
     }
     for (let i in switchers) {
         changeSwitcher(i, sGet(i))
@@ -600,15 +603,11 @@ window.onload = () => {
             if (setUn !== null) {
                 if (setUn) {
                     sSet("migrated", "true")
-                    eid("desc-migration").innerHTML += `<br><br>${loc.DataTransferSuccess}`
-                } else {
-                    eid("desc-migration").innerHTML += `<br><br>${loc.DataTransferError}`
                 }
             }
         }
         loadSettings();
         detectColorScheme();
-        popup("migration", 1);
     }
     window.history.replaceState(null, '', window.location.pathname);
 

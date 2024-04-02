@@ -27,12 +27,12 @@ Content-Type: application/json
 | `aFormat`         | `string`  | `best / mp3 / ogg / wav / opus`    | `mp3`     |                                                                                 |
 | `filenamePattern` | `string`  | `classic / pretty / basic / nerdy` | `classic` | changes the way files are named. previews can be seen in the web app.           |
 | `isAudioOnly`     | `boolean` | `true / false`                     | `false`   |                                                                                 |
-| `isNoTTWatermark` | `boolean` | `true / false`                     | `false`   | changes whether downloaded tiktok videos have watermarks.                       |
 | `isTTFullAudio`   | `boolean` | `true / false`                     | `false`   | enables download of original sound used in a tiktok video.                      |
 | `isAudioMuted`    | `boolean` | `true / false`                     | `false`   | disables audio track in video downloads.                                        |
 | `dubLang`         | `boolean` | `true / false`                     | `false`   | backend uses Accept-Language header for youtube video audio tracks when `true`. |
 | `disableMetadata` | `boolean` | `true / false`                     | `false`   | disables file metadata when set to `true`.                                      |
 | `twitterGif`      | `boolean` | `true / false`                     | `false`   | changes whether twitter gifs are converted to .gif                              |
+| `vimeoDash`       | `boolean` | `true / false`                     | `false`   | changes whether streamed file type is preferred for vimeo videos.               |
 
 ### response body variables
 | key          | type     | variables                                                   |
@@ -54,15 +54,12 @@ item type: `object`
 | `thumb` | `string` | item thumbnail that's displayed in the picker           | used only for `video` type.            |
 
 ## GET: `/api/stream`
-cobalt's live render (or stream) endpoint. used for sending various media content over to the user.  
+cobalt's live render (or stream) endpoint. usually, you will receive a url to this endpoint
+from a successful call to `/api/json`. however, the parameters passed to it are **opaque**
+and **unmodifiable** from your (the api client's) perspective, and can change between versions.
 
-### request query variables
-| key  | variables        | description                                                                                                                    |
-|:-----|:-----------------|:-------------------------------------------------------------------------------------------------------------------------------|
-| `p`  | `1`              | used for probing whether user is rate limited.                                                                                 |
-| `t`  | stream token     | unique stream id. used for retrieving cached stream info data.                                                                 |
-| `h`  | hmac             | hashed combination of: (hashed) ip address, stream token, expiry timestamp, and service name. used for verification of stream. |
-| `e`  | expiry timestamp |                                                                                                                                |
+therefore you don't need to worry about what they mean - but if you really want to know, you can
+[read the source code](../src/modules/stream/manage.js).
 
 ## GET: `/api/serverInfo`
 returns current basic server info.  
